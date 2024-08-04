@@ -1,6 +1,16 @@
+using Inspimo.CQRSPattern.CQRSPattern.Handlers;
+using Inspimo.CQRSPattern.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<Context>();
+builder.Services.AddScoped<GetProductQueryHandler>();
+builder.Services.AddScoped<GetProductByIDQueryHandler>();
+builder.Services.AddScoped<CreateProductCommentHandler>();
+builder.Services.AddScoped<RemoveProductCommentHandler>();
+builder.Services.AddScoped<GetProductUpdateByIDQueryHandler>();
+builder.Services.AddScoped<UpdateProductCommentHandler>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

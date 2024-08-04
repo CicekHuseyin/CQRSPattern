@@ -1,0 +1,25 @@
+﻿@model Inspimo.CQRSPattern.CQRSPattern.Commends.CreateProductCommand
+@{
+    Layout = null;
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<div class="container">
+    <br /><br />
+    <form method="post">
+        <label>Ürün Adı</label>
+        <input type="text" class="form form-control" asp-for="ProductName" />
+        <br />
+        <label>Ürün Marka</label>
+        <input type="text" class="form form-control" asp-for="ProductBrand" />
+        <br />
+        <label>Stok Sayısı</label>
+        <input type="text" class="form form-control" asp-for="ProductStock" />
+        <br />
+        <label>Ürün Fiyatı</label>
+        <input type="text" class="form form-control" asp-for="ProductPrice" />
+        <br />
+        <button class="btn btn-primary">Ürünü Ekle</button>
+    </form>
+    
+</div>

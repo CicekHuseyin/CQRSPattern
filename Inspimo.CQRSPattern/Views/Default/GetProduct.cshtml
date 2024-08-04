@@ -1,0 +1,17 @@
+﻿@model Inspimo.CQRSPattern.CQRSPattern.Results.GetProductByIDQueryResult
+@{
+    Layout = null;
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<div class="container">
+    <br />
+    <label>Ürün ID</label>
+    <input type="text" class="form form-control" asp-for="ProductID" />
+    <br />
+    <label>Ürün Adı</label>
+    <input type="text" class="form form-control" asp-for="ProductName" />
+    <br />
+    <label>Ürün Marka</label>
+    <input type="text" class="form form-control" asp-for="ProductBrand" />
+    <br />
+</div>

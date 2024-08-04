@@ -1,0 +1,9 @@
+CQRS Design Pattern İçin Key: Get
+
+Yazma: Insert,Update,Delete
+Okuma:Select,Where,GetByID
+
+Result:Listelenecek prop
+Handlers: Crud işlmeleri
+Queries:Id gibi parametreleri
+Commands:Ekleme,Silme,Güncelleme işlemlerine ait propları tutuyor.
