@@ -7,3 +7,73 @@ Result:Listelenecek prop
 Handlers: Crud işlmeleri
 Queries:Id gibi parametreleri
 Commands:Ekleme,Silme,Güncelleme işlemlerine ait propları tutuyor.
+
+
+CQRS Design Pattern CRUD Aşamaları(Asp.net core web app projesi içinde)
+
+Projeye paketleri yükle: Sql server, asp.net core,tools,design
+DAL klasörü aç. İçine class oluştur entity gir.
+
+public class Product
+    {
+        public int ProductID { get; set; }
+        public string ProductName { get; set; }
+        public string ProductBrand { get; set; }
+        public int ProductStock { get; set; }
+        public decimal ProductPrice { get; set; }
+        public bool ProductStatus { get; set; }
+    }
+Dal içine Context i gir. Entity i Dbset ile çek.
+ public class Context : DbContext
+    {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=DESKTOP-KR485FT\\SQLEXPRESS; initial Catalog=CQRSDb; integrated security=true");
+        }
+
+        public DbSet<Product> Products { get; set; }
+    }
+migration yap.
+Projede CQRSPattern klasörü oluştur. İçine 4 klasör ekle. Döngü bu klasörler içinde olacak.
+Commends,Handlers,Queries,Results
+
+1-Verileri Listeleme
+-Results klaösrüne Listeleyeceğin propları tanımla.(GetProductQueryResult.cs)
+-Handlers klasörüne Results da girdiğin verileri Listeleyecek bir Fonksiyon yaz Handle Fonksiyonu(GetProductQueryHandler.cs)
+-Controller a gel Handlers da oluşturmuş olduğun class i constructor metodu ile çek. ve için deki Handle metodunu çalıştır.(DefaultController.cs)
+-Verileri view de listelemek için Controller da ki Endpoint e view oluştur. ve model olarak Results klasöründe ki GetProductQueryResult class ını tanımla ve listele.
+2-Id ye Göre Veri Getirme
+-Results klaösrüne Listelemek istediğin propları tanımla.(GetProductByIDQueryResult.cs)
+-Handelers klasöründe ID ye göre verileri çekeceğimiz fonk. yazarken çekeceğimiz Id propunu öncelikle Queries klasöründe tanımlıyoruz.(GetProductByIDQuery)
+-Handlers klasörüne Results da girdiğin verileri Listeleyecek bir Fonksiyon yaz Handle Fonksiyonu(GetProductByIDQueryHandler.cs)
+-Controller a gel Handlers da oluşturmuş olduğun class i constructor metodu ile çek. ve için deki Handle metodunu çalıştır.(DefaultController.cs)
+-Verileri view de listelemek için Controller da ki Endpoint e view oluştur. ve model olarak Results klasöründe ki GetProductByIDQueryResult class ını tanımla ve listele.
+3-Ekleme İşlemi
+-Commends klaösrüne Eklemek istediğin propları tanımla.(CreateProductCommand.cs)
+-Handlers klasörüne Commends de girdiğin verileri ekleyecek bir Fonksiyon yaz Handle Fonksiyonu(CreateProductCommentHandler.cs)
+-Controller a gel Handlers da oluşturmuş olduğun class i constructor metodu ile çek. ve için deki Handle metodunu çalıştır.(DefaultController.cs)
+-Verileri view de eklemek için Controller da ki Endpoint e view oluştur. ve model olarak Results klasöründe ki CreateProductCommand class ını tanımla ve işlemi yap.
+4-Silme İşlemi
+-Commends klaösrüne id ye göre sileceğin için bir id prop u tanımla.(RemoveProductCommand.cs)
+-Handlers klasörüne Commends de girdiğin id yi db deki id ile eşleştir,id değerine göre sileceğin bir Fonksiyon yaz Handle Fonksiyonu(RemoveProductCommentHandler.cs)
+-Controller a gel Handlers da oluşturmuş olduğun class i constructor metodu ile çek. ve için deki Handle metodunu çalıştır.(DefaultController.cs)
+-Verileri silmek için Listeleme yaptığın sayfada bir button oluştur. O buton da Controller da oluşturduğun metodu çağır.
+5-Güncelleme İşlemi
+-Results klaösrüne Güncelleyeceğin propları tanımla.(GetProductUpdateQueryResult.cs)
+-Handelers klasöründe ID ye göre verileri listeleyeceğimiz fonk. yazarken çekeceğimiz Id propunu öncelikle Queries klasöründe tanımlıyoruz.(GetProductUpdateByIDQuery)
+-Controller da Get metodunda id ye göre gelen veriler için Results klasöründe ki class ı kullanıyoruz. View de (GetProductUpdateQueryResult)
+-Controller da Post metodunda güncellemek istediğimiz verileri kullanırken de Commends klasöründe oluşturduğumuz UpdateProductCommand.cs yi kullanıyoruz.(DefaultController.cs)
+
+Bu işlemleri çalıştırmadan önce Program.cs e AddDbContext i ve çalıştırmak istediğimiz Handlers klasöründe ki classları tanımlıyoruz.
+builder.Services.AddDbContext<Context>();
+builder.Services.AddScoped<GetProductQueryHandler>();
+builder.Services.AddScoped<GetProductByIDQueryHandler>();
+builder.Services.AddScoped<CreateProductCommentHandler>();
+builder.Services.AddScoped<RemoveProductCommentHandler>();
+builder.Services.AddScoped<GetProductUpdateByIDQueryHandler>();
+builder.Services.AddScoped<UpdateProductCommentHandler>();
+
+
+
+
+
